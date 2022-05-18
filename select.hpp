@@ -2,6 +2,8 @@
 #define __SELECT_HPP__
 
 #include <cstring>
+#include <string>
+#include "spreadsheet.hpp"
 
 class Select
 {
@@ -19,6 +21,16 @@ public:
 // a string) and implements the original interface in terms of this.  Derived
 // classes need only implement the new select function.  You may choose to
 // derive from Select or Select_Column at your convenience.
+
+class Select_Construct_Helper : public Select
+{
+	public:
+		virtual bool select(const Spreadsheet* sheet, int row) const
+		{
+			return 1;
+		}
+};
+
 class Select_Column: public Select
 {
 protected:
@@ -36,6 +48,38 @@ public:
 
     // Derived classes can instead implement this simpler interface.
     virtual bool select(const std::string& s) const = 0;
+};
+
+class Select_Contains: public Select_Column
+{
+	protected:
+		std::string search;
+	public:
+		Select_Contains(const Spreadsheet* sheet, const std::string& col, const std::string& s) : Select_Column(sheet, col), search(s) {}
+
+	virtual bool select(const std:: string& s) const
+	{
+		if(s.find(Search) != std:String::npos) return 1;
+		return 0;
+	}
+};
+
+class Select_Not : public Select
+{
+	protected:
+		Select* x;
+	public:
+		Select_Not(Select* input) : x(input) {}
+		
+		~Select_Not()
+		{
+			delete x;
+		}
+
+		virtual bool select(const Spreadsheet* sheet, int row) const
+		{
+			return !x->select(sheet, row);
+		}
 };
 
 #endif //__SELECT_HPP__
