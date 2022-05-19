@@ -43,6 +43,19 @@ public:
     virtual bool select(const std::string& s) const = 0;
 };
 
+class Select_Contains: public Select_Column {
+    protected:
+        string search;
+
+    public:
+        Select_Contains(const Spreadsheet* sheet, const string& col, const string& name) : Select_Column(sheet, col), search(name) {}
+
+        virtual bool select(const string& s) const {
+                return (s.find(search) != string::npos);
+        }
+
+};
+
 class Select_Not: public Select {
     protected:
 	Select* s;

@@ -16,7 +16,7 @@ TEST(Not, NoApple) {
 	sheet.add_row({"Apple", "5"});
 	sheet.add_row({"Kiwi", "24"});
 
-	//sheet.set_selection(new Select_Not(Select_Contains(&sheet, "Fruit", "Apple")));
+	sheet.set_selection(new Select_Not(new Select_Contains(&sheet, "Fruit", "Apple")));
 	sheet.print_selection(test);
 	EXPECT_EQ(test.str(), "Orange 2 \nKiwi 24 \n");
 }
@@ -30,7 +30,7 @@ TEST(Not, EmptyString) {
         sheet.add_row({"Apple", "5"});
         sheet.add_row({"Kiwi", "24"});
 
-       // sheet.set_selection(new Select_Not(Select_Contains(&sheet, "Fruit", "")));
+        sheet.set_selection(new Select_Not(new Select_Contains(&sheet, "Fruit", "")));
         sheet.print_selection(test);
         EXPECT_EQ(test.str(), "");
 
