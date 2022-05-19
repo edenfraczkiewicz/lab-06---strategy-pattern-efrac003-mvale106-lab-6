@@ -71,6 +71,50 @@ TEST(Contains, ContainsA) {
         EXPECT_EQ(test.str(), "Sam 24 \nJason 15 \n");
 }
 
+TEST(Not, NoApple) {
+	Spreadsheet sheet;
+	stringstream test;
+
+	sheet.set_column_names({"Fruit", "Amount"});
+	sheet.add_row({"Orange", "2"});
+	sheet.add_row({"Apple", "5"});
+	sheet.add_row({"Kiwi", "24"});
+
+	sheet.set_selection(new Select_Not(new Select_Contains(&sheet, "Fruit", "Apple")));
+	sheet.print_selection(test);
+	EXPECT_EQ(test.str(), "Orange 2 \nKiwi 24 \n");
+}
+
+TEST(Not, EmptyString) {
+	Spreadsheet sheet;
+        stringstream test;
+
+        sheet.set_column_names({"Fruit", "Amount"});
+        sheet.add_row({"Orange", "2"});
+        sheet.add_row({"Apple", "5"});
+        sheet.add_row({"Kiwi", "24"});
+
+        sheet.set_selection(new Select_Not(new Select_Contains(&sheet, "Fruit", "")));
+        sheet.print_selection(test);
+        EXPECT_EQ(test.str(), "");
+
+}
+
+TEST(Not, NoE) {
+	Spreadsheet sheet;
+        stringstream test;
+
+        sheet.set_column_names({"Fruit", "Amount"});
+        sheet.add_row({"Orange", "2"});
+        sheet.add_row({"Apple", "5"});
+        sheet.add_row({"Kiwi", "24"});
+	sheet.add_row({"Banana", "13"});
+
+	sheet.set_selection(new Select_Not(new Select_Contains(&sheet, "Fruit", "e")));
+        sheet.print_selection(test);
+        EXPECT_EQ(test.str(), "Kiwi 24 \nBanana 13 \n");
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
