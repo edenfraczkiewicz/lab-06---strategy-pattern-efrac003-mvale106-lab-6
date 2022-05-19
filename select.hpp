@@ -2,8 +2,8 @@
 #define __SELECT_HPP__
 
 #include <cstring>
-#include <iostream>
 #include <string>
+#include <iostream>
 #include "spreadsheet.hpp"
 
 using namespace std;
