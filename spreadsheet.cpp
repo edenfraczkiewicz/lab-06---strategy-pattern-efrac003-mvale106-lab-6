@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <iostream>
 
+using namespace std;
+
 Spreadsheet::~Spreadsheet()
 {
     delete select;
