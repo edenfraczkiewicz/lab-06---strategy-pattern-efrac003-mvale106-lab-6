@@ -2,6 +2,11 @@
 #define __SELECT_HPP__
 
 #include <cstring>
+#include <string>
+#include <iostream>
+#include "spreadsheet.hpp"
+
+using namespace std;
 
 class Select
 {
@@ -36,6 +41,22 @@ public:
 
     // Derived classes can instead implement this simpler interface.
     virtual bool select(const std::string& s) const = 0;
+};
+
+class Select_Not: public Select {
+    protected:
+	Select* s;
+
+    public:
+	Select_Not(Select* input) : s(input) {}
+	
+	~Select_Not() {
+		delete s;
+	}
+
+	virtual bool select(const Spreadsheet* sheet, int row) const {
+		return !s->select(sheet, row);
+	}
 };
 
 #endif //__SELECT_HPP__
