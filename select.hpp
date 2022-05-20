@@ -74,4 +74,31 @@ class Select_Not: public Select {
 	}
 };
 
+class Select_And : public Select
+{
+	protected:
+		Select* x;
+		Select* y;
+	public:
+		Select_And(Select* one, Select* two) : x(one), y(two) {}
+		virtual bool select(const Spreadsheet* sheet, int row) const
+		{
+			return x->select(Sheet, row) && y->select(sheet, row);
+		}
+};
+
+class Select_Or : public Select
+{
+	protected: 
+		Select* x;
+		Select* y;
+
+	public:
+		Select_Or(Select* one, Select* two) : x(one), y(two) {}
+		virtual bool select(const Spreadsheet* sheet, int row) const
+		{
+			return x->select(sheet, row) || y->select(sheet, row);
+		}
+};
+
 #endif //__SELECT_HPP__
