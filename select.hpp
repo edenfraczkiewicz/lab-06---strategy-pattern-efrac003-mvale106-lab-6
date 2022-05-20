@@ -3,7 +3,10 @@
 
 #include <cstring>
 #include <string>
+#include <iostream>
 #include "spreadsheet.hpp"
+
+using namespace std;
 
 class Select
 {
@@ -22,14 +25,6 @@ public:
 // classes need only implement the new select function.  You may choose to
 // derive from Select or Select_Column at your convenience.
 
-class Select_Construct_Helper : public Select
-{
-	public:
-		virtual bool select(const Spreadsheet* sheet, int row) const
-		{
-			return 1;
-		}
-};
 
 class Select_Column: public Select
 {
@@ -50,36 +45,33 @@ public:
     virtual bool select(const std::string& s) const = 0;
 };
 
-class Select_Contains: public Select_Column
-{
-	protected:
-		std::string search;
-	public:
-		Select_Contains(const Spreadsheet* sheet, const std::string& col, const std::string& s) : Select_Column(sheet, col), search(s) {}
+class Select_Contains: public Select_Column {
+    protected:
+        string search;
 
-	virtual bool select(const std:: string& s) const
-	{
-		if(s.find(Search) != std:String::npos) return 1;
-		return 0;
-	}
+    public:
+        Select_Contains(const Spreadsheet* sheet, const string& col, const string& name) : Select_Column(sheet, col), search(name) {}
+
+        virtual bool select(const string& s) const {
+                return (s.find(search) != string::npos);
+        }
+
 };
 
-class Select_Not : public Select
-{
-	protected:
-		Select* x;
-	public:
-		Select_Not(Select* input) : x(input) {}
-		
-		~Select_Not()
-		{
-			delete x;
-		}
+class Select_Not: public Select {
+    protected:
+	Select* s;
 
-		virtual bool select(const Spreadsheet* sheet, int row) const
-		{
-			return !x->select(sheet, row);
-		}
+    public:
+	Select_Not(Select* input) : s(input) {}
+	
+	~Select_Not() {
+		delete s;
+	}
+
+	virtual bool select(const Spreadsheet* sheet, int row) const {
+		return !s->select(sheet, row);
+	}
 };
 
 #endif //__SELECT_HPP__
