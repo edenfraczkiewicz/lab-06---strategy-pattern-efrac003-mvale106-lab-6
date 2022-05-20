@@ -115,6 +115,49 @@ TEST(Not, NoE) {
         EXPECT_EQ(test.str(), "Kiwi 24 \nBanana 13 \n");
 }
 
+TEST(Select_And, BothTrue)
+{
+        Select* select = new Select_And(new Select_Contains(sheet, "Last", "Andrews"), new Select_Contains(sheet, "First", "Amanda"));
+        ASSERT_TRUE(select->select(sheet,0));
+        delete select;
+}
+
+TEST(Select_And, BothFalse)
+{
+        Select* select = new Select_And(new Select_Contains(sheet, "Last", "Jaskson"), new Select_Contains(sheet, "First", "Francine"));
+        ASSERT_FALSE(select->select(sheet,0));
+        delete select;
+}
+
+TEST(Select_And, OneTrueOneFalse)
+{
+        Select* select = new Select_And(new Select_Contains(sheet, "Last", "Andrews"), new Select_Contains(sheet, "First", "Francine"));
+        ASSERT_FALSE(select->select(sheet,0));
+        delete select;
+        delete sheet;
+}
+
+TEST(Select_Or, BothTrue)
+{
+	Select* select = new Select_Or(new Select_Contains(sheet, "Last", "Andrews"), new Select_Contains(sheet, "First", "Amanda"));
+	ASSERT_TRUE(select->select(sheet,0));
+	delete select;
+}
+
+TEST(Select_Or, BothFalse)
+{
+	Select* select = new Select_Or(new Select_Contains(sheet, "Last", "Jaskson"), new Select_Contains(sheet, "First", "Francine"));
+	ASSERT_FALSE(select->select(sheet,0));
+	delete select;
+}
+
+TEST(Select_Or, OneTrueOneFalse)
+{
+	Select* select = new Select_Or(new Select_Contains(sheet, "Last", "Andrews"), new Select_Contains(sheet, "First", "Francine"));
+	ASSERT_TRUE(select->select(sheet,0));
+	delete select;
+}
+
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
